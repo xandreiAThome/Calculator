@@ -43,10 +43,10 @@ body {
   font-size: clamp(0.6rem, 1.16vw, 1.4rem);
 }
 
-.screen-border {
+.screen {
   width: 80%;
   height: 65%;
-  background-color: rgb(176, 176, 176);
+  background-color: rgb(200, 200, 200);
   align-self: center;
   margin-bottom: clamp(18px, 1.6vw, 30px);
 }
@@ -96,4 +96,12 @@ body {
   color: white;
   border-radius: 10px;
   font-size: clamp(20px, 2.1vw, 40px);
+}
+
+button {
+  transition: all 0.15s ease-out;
+}
+
+button:active {
+  transform: scale(0.95);
 }
