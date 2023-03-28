@@ -27,8 +27,8 @@ body {
 }
 
 .screen-container {
-  flex: 1;
-  background-color: black;
+  flex: 1.25;
+  background-color: rgb(18, 18, 18);
   border-top-right-radius: 16px;
   border-top-left-radius: 16px;
   display: flex;
@@ -45,7 +45,7 @@ body {
 
 .screen-border {
   width: 80%;
-  height: 60%;
+  height: 65%;
   background-color: rgb(176, 176, 176);
   align-self: center;
   margin-bottom: clamp(18px, 1.6vw, 30px);
@@ -56,4 +56,44 @@ body {
   background-color: rgb(176, 176, 176);
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  color: white;
+  gap: 10px;
+  padding: clamp(20px, 1.6vw, 30px) clamp(18px, 1.25vw, 24px)
+    clamp(30px, 1.9vw, 36px) clamp(18px, 1.25vw, 24px);
+}
+
+.numbers {
+  background-color: rgb(42, 42, 42);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  color: white;
+  font-size: clamp(20px, 2.1vw, 40px);
+  border-radius: 10px;
+}
+
+.operations {
+  background-color: rgb(92, 92, 92);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  font-size: clamp(20px, 2.1vw, 40px);
+}
+
+.edit {
+  background-color: #d4727f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  font-size: clamp(20px, 2.1vw, 40px);
 }
