@@ -56,9 +56,23 @@ body {
   flex-direction: column;
   padding: clamp(11px, 1.05vw, 20px);
   box-sizing: border-box;
-  font-size: clamp(26px, 2.5vw, 48px);
   font-weight: bold;
-  word-wrap: break-word;
+}
+
+.upper-screen {
+  flex: 1.2;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: clamp(17px, 1.7vw, 32px);
+}
+
+.lower-screen {
+  flex: 2;
+  display: flex;
+  justify-content: flex-end;
+  font-size: clamp(30px, 2.8vw, 52px);
+  align-items: center;
 }
 
 .buttons-container {
