@@ -17,6 +17,9 @@ let secondNum = "";
 let secondDot = false;
 let secondOp = "";
 
+let evaluated = false;
+let consec = true;
+
 function evaluate() {
   switch (firstOp) {
     case "+":
@@ -99,6 +102,12 @@ const upperScreen = document.querySelector(".upper-screen");
 const numbers = document.querySelectorAll(".numbers");
 numbers.forEach((n) => {
   n.addEventListener("click", (e) => {
+    // IF already evaluated and there is no consecutive operator then just empty the screen
+    if (evaluated && firstNum !== "" && !consec) {
+      upperScreen.innerHTML = "";
+      empty();
+      evaluated = false;
+    }
     // If there is still no first operator
     if (firstOp === "") {
       if (e.target.innerHTML === "." && firstDot) {
@@ -141,11 +150,17 @@ operations.forEach((op) => {
       firstOp = e.target.innerHTML;
       upperScreen.innerHTML = "";
       upperScreen.innerHTML = firstNum + firstOp;
+      // if evaluated already and inputted a operator right after
+      if (evaluated) consec = true;
       // if there is a first operator and second number entered
     } else if (firstOp !== "" && secondNum !== "") {
       secondOp = e.target.innerHTML;
       upperScreen.innerHTML = "";
       upperScreen.innerHTML = firstNum + firstOp + secondNum;
+      if (e.target.innerHTML === "=") {
+        evaluated = true;
+        consec = false;
+      }
       evaluate();
     }
   });
