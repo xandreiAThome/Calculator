@@ -63,6 +63,7 @@ numbers.forEach((n) => {
   });
 });
 
+// Clears all the stored operations and numbers
 const CE = document.getElementById("CE-btn");
 CE.addEventListener("click", (e) => {
   lowerScreen.innerHTML = "";
@@ -123,6 +124,8 @@ operations.forEach((op) => {
     }
   });
 });
+
+//////////////////////////////////////////////// functions below
 
 function evaluate() {
   switch (firstOp) {
