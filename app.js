@@ -42,7 +42,7 @@ function add(numA, numB) {
   lowerScreen.innerHTML = ans;
   empty();
   firstNum = String(ans);
-  if (secondOp !== "=") firstOp = lastOp;
+  if (lastOp !== "=") firstOp = lastOp;
 }
 
 function subtract(numA, numB) {
@@ -53,7 +53,7 @@ function subtract(numA, numB) {
   lowerScreen.innerHTML = ans;
   empty();
   firstNum = String(ans);
-  if (secondOp !== "=") firstOp = lastOp;
+  if (lastOp !== "=") firstOp = lastOp;
 }
 
 function multiply(numA, numB) {
@@ -64,7 +64,7 @@ function multiply(numA, numB) {
   lowerScreen.innerHTML = ans;
   empty();
   firstNum = String(ans);
-  if (secondOp !== "=") firstOp = lastOp;
+  if (lastOp !== "=") firstOp = lastOp;
 }
 
 function divide(numA, numB) {
@@ -75,7 +75,7 @@ function divide(numA, numB) {
   lowerScreen.innerHTML = ans;
   empty();
   firstNum = String(ans);
-  if (secondOp !== "=") firstOp = lastOp;
+  if (lastOp !== "=") firstOp = lastOp;
 }
 
 function percentage() {}
@@ -101,7 +101,6 @@ numbers.forEach((n) => {
   n.addEventListener("click", (e) => {
     // If there is still no first operator
     if (firstOp === "") {
-      console.log("HI");
       if (e.target.innerHTML === "." && firstDot) {
         void 0;
       } else {
