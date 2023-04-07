@@ -19,6 +19,8 @@ let secondOp = "";
 
 let evaluated = false;
 let consec = true;
+let percentOp = false;
+let squareRootOp = false;
 
 function evaluate() {
   switch (firstOp) {
@@ -33,6 +35,12 @@ function evaluate() {
       break;
     case "÷":
       divide(firstNum, secondNum);
+      break;
+    case "%":
+      percentage(firstNum);
+      break;
+    case "√":
+      squareRoot(firstNum);
       break;
   }
 }
@@ -81,9 +89,25 @@ function divide(numA, numB) {
   if (lastOp !== "=") firstOp = lastOp;
 }
 
-function percentage() {}
+function percentage(numA) {
+  let ans = parseFloat(numA) / 100;
+  let lastOp = secondOp;
+  lowerScreen.innerHTML = "";
+  lowerScreen.innerHTML = ans;
+  empty();
+  firstNum = String(ans);
+  if (lastOp !== "=") firstOp = lastOp;
+}
 
-function squareRoot() {}
+function squareRoot(numA) {
+  let ans = Math.sqrt(parseFloat(numA));
+  let lastOp = secondOp;
+  lowerScreen.innerHTML = "";
+  lowerScreen.innerHTML = ans;
+  empty();
+  firstNum = String(ans);
+  if (lastOp !== "=") firstOp = lastOp;
+}
 
 // empties varianbles
 function empty() {
@@ -93,6 +117,8 @@ function empty() {
   secondOp = "";
   firstDot = false;
   secondDot = false;
+  percentOp = false;
+  squareRootOp = false;
 }
 
 const lowerScreen = document.querySelector(".lower-screen");
@@ -103,13 +129,14 @@ const numbers = document.querySelectorAll(".numbers");
 numbers.forEach((n) => {
   n.addEventListener("click", (e) => {
     // IF already evaluated and there is no consecutive operator then just empty the screen
+    // checks first num is not empty because the answer from each evaluation is stored as the first num of a consecutive operation if there is any
     if (evaluated && firstNum !== "" && !consec) {
       upperScreen.innerHTML = "";
       empty();
       evaluated = false;
     }
     // If there is still no first operator
-    if (firstOp === "") {
+    if (firstOp === "" || firstOp === "√") {
       if (e.target.innerHTML === "." && firstDot) {
         void 0;
       } else {
@@ -120,7 +147,7 @@ numbers.forEach((n) => {
         if (e.target.innerHTML === ".") firstDot = true;
       }
       // if there is now a first operator
-    } else if (firstOp !== "") {
+    } else if (firstOp !== "" && !percentOp && !squareRootOp) {
       if (e.target.innerHTML === "." && secondDot) {
         void 0;
       } else {
@@ -138,6 +165,7 @@ const CE = document.getElementById("CE-btn");
 CE.addEventListener("click", (e) => {
   lowerScreen.innerHTML = "";
   upperScreen.innerHTML = "";
+  evaluated = false;
   empty();
 });
 
@@ -145,13 +173,28 @@ CE.addEventListener("click", (e) => {
 const operations = document.querySelectorAll(".operations");
 operations.forEach((op) => {
   op.addEventListener("click", (e) => {
-    // if first number is entered and there is still no first operator
-    if (firstNum !== "" && firstOp === "" && e.target.innerHTML !== "=") {
-      firstOp = e.target.innerHTML;
-      upperScreen.innerHTML = "";
-      upperScreen.innerHTML = firstNum + firstOp;
+    // if first number is entered and there is still no first operator and the first operator is not an equal sign
+    if (
+      (e.target.innerHTML === "√" || firstNum !== "") &&
+      firstOp === "" &&
+      e.target.innerHTML !== "="
+    ) {
+      //
+      if (e.target.innerHTML === "√") {
+        squareRootOp = true;
+        firstOp = e.target.innerHTML;
+        upperScreen.innerHTML = "";
+        upperScreen.innerHTML = firstOp + firstNum;
+      } else {
+        firstOp = e.target.innerHTML;
+        upperScreen.innerHTML = "";
+        upperScreen.innerHTML = firstNum + firstOp;
+      }
       // if evaluated already and inputted a operator right after
       if (evaluated) consec = true;
+
+      if (e.target.innerHTML === "%") percentOp = true;
+
       // if there is a first operator and second number entered
     } else if (firstOp !== "" && secondNum !== "") {
       secondOp = e.target.innerHTML;
@@ -161,6 +204,18 @@ operations.forEach((op) => {
         evaluated = true;
         consec = false;
       }
+      evaluate();
+    } else if (firstOp === "%" && firstNum !== "") {
+      secondOp = e.target.innerHTML;
+      upperScreen.innerHTML = "";
+      upperScreen.innerHTML = firstNum + firstOp;
+
+      evaluate();
+    } else if (firstNum !== "" && firstOp === "√") {
+      secondOp = e.target.innerHTML;
+      upperScreen.innerHTML = "";
+      upperScreen.innerHTML = firstOp + firstNum;
+
       evaluate();
     }
   });
