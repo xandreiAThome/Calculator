@@ -146,7 +146,7 @@ const operations = document.querySelectorAll(".operations");
 operations.forEach((op) => {
   op.addEventListener("click", (e) => {
     // if first number is entered and there is still no first operator
-    if (firstNum !== "" && firstOp === "") {
+    if (firstNum !== "" && firstOp === "" && e.target.innerHTML !== "=") {
       firstOp = e.target.innerHTML;
       upperScreen.innerHTML = "";
       upperScreen.innerHTML = firstNum + firstOp;
