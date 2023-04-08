@@ -290,6 +290,4 @@ function empty() {
   secondOp = "";
   firstDot = false;
   secondDot = false;
-  percentOp = false;
-  squareRootOp = false;
 }
