@@ -24,6 +24,11 @@ let percentOp = false;
 let squareRootOp = false;
 
 const lowerScreen = document.querySelector(".lower-screen");
+window.addEventListener("load", function (e) {
+  var el = document.querySelector(".lower-screen");
+  el.scrollLeft = el.scrollWidth;
+});
+
 const upperScreen = document.querySelector(".upper-screen");
 
 // Records the typed numbers in the calculator
@@ -66,7 +71,6 @@ function inputNumbers(e) {
     }
   }
 }
-
 const numbers = document.querySelectorAll(".numbers");
 numbers.forEach((n) => {
   n.addEventListener("click", (e) => {
