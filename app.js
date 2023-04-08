@@ -193,103 +193,78 @@ function evaluate() {
 }
 
 function add(numA, numB) {
-  let ans = parseFloat(numA) + parseFloat(numB);
-  // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
+  // make the numbers to string but fixed their decimals to just 5 digits, make the answer to number again to remove the trailing zeroes
+  // and finally convert it to a string
+  let ans = String(
+    parseFloat((parseFloat(numA) + parseFloat(numB)).toFixed(5))
+  );
   let lastOp = secondOp;
   lowerScreen.innerHTML = "";
-  if (ans.toFixed(5) % 1 === 0) {
-    lowerScreen.innerHTML = ans;
-    empty();
-    firstNum = ans;
-  } else {
-    lowerScreen.innerHTML = ans.toFixed(5);
-    empty();
-    firstNum = ans.toFixed(5);
-  }
+  lowerScreen.innerHTML = ans;
+  empty();
+  firstNum = ans;
+  // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
   if (lastOp !== "=") firstOp = lastOp;
 }
 
 function subtract(numA, numB) {
-  let ans = parseFloat(numA) - parseFloat(numB);
-  // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
+  let ans = String(
+    parseFloat((parseFloat(numA) - parseFloat(numB)).toFixed(5))
+  );
   let lastOp = secondOp;
   lowerScreen.innerHTML = "";
-  if (ans.toFixed(5) % 1 === 0) {
-    lowerScreen.innerHTML = ans;
-    empty();
-    firstNum = ans;
-  } else {
-    lowerScreen.innerHTML = ans.toFixed(5);
-    empty();
-    firstNum = ans.toFixed(5);
-  }
+  lowerScreen.innerHTML = ans;
+  empty();
+  firstNum = ans;
+  // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
   if (lastOp !== "=") firstOp = lastOp;
 }
 
 function multiply(numA, numB) {
-  let ans = parseFloat(numA) * parseFloat(numB);
-  // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
+  let ans = String(
+    parseFloat((parseFloat(numA) * parseFloat(numB)).toFixed(5))
+  );
   let lastOp = secondOp;
   lowerScreen.innerHTML = "";
-  if (ans.toFixed(5) % 1 === 0) {
-    lowerScreen.innerHTML = ans;
-    empty();
-    firstNum = ans;
-  } else {
-    lowerScreen.innerHTML = ans.toFixed(5);
-    empty();
-    firstNum = ans.toFixed(5);
-  }
+  lowerScreen.innerHTML = ans;
+  empty();
+  firstNum = ans;
+  // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
   if (lastOp !== "=") firstOp = lastOp;
 }
 
 function divide(numA, numB) {
-  let ans = parseFloat(numA) / parseFloat(numB);
-  // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
+  let ans = String(
+    parseFloat((parseFloat(numA) / parseFloat(numB)).toFixed(5))
+  );
   let lastOp = secondOp;
   lowerScreen.innerHTML = "";
-  if (ans.toFixed(5) % 1 === 0) {
-    lowerScreen.innerHTML = ans;
-    empty();
-    firstNum = ans;
-  } else {
-    lowerScreen.innerHTML = ans.toFixed(5);
-    empty();
-    firstNum = ans.toFixed(5);
-  }
+  lowerScreen.innerHTML = ans;
+  empty();
+  firstNum = ans;
+  // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
   if (lastOp !== "=") firstOp = lastOp;
 }
 
 function percentage(numA) {
-  let ans = parseFloat(numA) / 100;
+  let ans = String(parseFloat((parseFloat(numA) / 100).toFixed(5)));
   let lastOp = secondOp;
   lowerScreen.innerHTML = "";
-  if (ans.toFixed(5) % 1 === 0) {
-    lowerScreen.innerHTML = ans;
-    empty();
-    firstNum = ans;
-  } else {
-    lowerScreen.innerHTML = ans.toFixed(5);
-    empty();
-    firstNum = ans.toFixed(5);
-  }
+  lowerScreen.innerHTML = ans;
+  empty();
+  firstNum = ans;
+  // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
   if (lastOp !== "=") firstOp = lastOp;
 }
 
 function squareRoot(numA) {
-  let ans = Math.sqrt(parseFloat(numA));
+  let ans = String(parseFloat(Math.sqrt(parseFloat(numA)).toFixed(5)));
   let lastOp = secondOp;
   lowerScreen.innerHTML = "";
-  if (ans.toFixed(5) % 1 === 0) {
-    lowerScreen.innerHTML = ans;
-    empty();
-    firstNum = ans;
-  } else {
-    lowerScreen.innerHTML = ans.toFixed(5);
-    empty();
-    firstNum = ans.toFixed(5);
-  }
-
+  lowerScreen.innerHTML = ans;
+  empty();
+  firstNum = ans;
+  // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
   if (lastOp !== "=") firstOp = lastOp;
 }
 
