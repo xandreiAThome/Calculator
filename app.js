@@ -40,9 +40,10 @@ function inputNumbers(e) {
     empty();
     evaluated = false;
   }
-  // If there is still no first operator
-  // First Number
+  // If there is still no first operator or the first operator is a square root
+  // First Number added
   if ((firstOp === "" || firstOp === "√") && firstNum.length < 15) {
+    // if current char is a dot and there is already a first dot then do nothing
     if (e.target.innerHTML === "." && firstDot) {
       void 0;
     } else {
@@ -50,10 +51,11 @@ function inputNumbers(e) {
       lowerScreen.innerHTML = "";
       lowerScreen.innerHTML = firstNum;
 
+      // if current char is a dot then make firstDot true so that there is only one dot for each Number
       if (e.target.innerHTML === ".") firstDot = true;
     }
     // if there is now a first operator
-    // Second Number
+    // Second Number added
   } else if (
     firstOp !== "" &&
     !percentOp &&
@@ -71,6 +73,7 @@ function inputNumbers(e) {
     }
   }
 }
+// event listener for the numbers buttons
 const numbers = document.querySelectorAll(".numbers");
 numbers.forEach((n) => {
   n.addEventListener("click", (e) => {
@@ -113,12 +116,13 @@ AC.addEventListener("click", (e) => {
 function inputOp(e) {
   // if first number is entered and there is still no first operator and the first operator is not an equal sign
   // Or if the first operator is a squareroot
+  // then add the first part of the expression to memory
   if (
     (e.target.innerHTML === "√" || firstNum !== "") &&
     firstOp === "" &&
     e.target.innerHTML !== "="
   ) {
-    // if first operator is squareroot
+    // if first operator is squareroot then it comes first before a number
     if (e.target.innerHTML === "√") {
       squareRootOp = true;
       firstOp = e.target.innerHTML;
@@ -129,21 +133,25 @@ function inputOp(e) {
       upperScreen.innerHTML = "";
       upperScreen.innerHTML = firstNum + firstOp;
     }
-    // if evaluated already and inputted a operator right after
+    // if evaluated already and inputted a operator right after then it is a consecutive operation
     if (evaluated) consec = true;
 
     if (e.target.innerHTML === "%") percentOp = true;
 
-    // if there is a first operator and second number entered
+    // if there is a first operator and second number entered then evaluate the expression
   } else if (firstOp !== "" && secondNum !== "") {
     secondOp = e.target.innerHTML;
     upperScreen.innerHTML = "";
     upperScreen.innerHTML = firstNum + firstOp + secondNum;
+    // if the second operator is an equal sign then there is only one expression to evaluate
+    // and it is not a consecutive operation of expressions
     if (e.target.innerHTML === "=") {
       evaluated = true;
       consec = false;
     }
     evaluate();
+    // if first operator is percentage and there is a first number then evaluate it already
+    // because the percentage operator doesn't need a second number
   } else if (firstOp === "%" && firstNum !== "") {
     secondOp = e.target.innerHTML;
     upperScreen.innerHTML = "";
@@ -153,6 +161,8 @@ function inputOp(e) {
       consec = false;
     }
     evaluate();
+    // if there is a first number and the first operator is a square root then evaluate it already
+    // because the square root operator does't need a second number
   } else if (firstNum !== "" && firstOp === "√") {
     secondOp = e.target.innerHTML;
     upperScreen.innerHTML = "";
@@ -164,6 +174,7 @@ function inputOp(e) {
     evaluate();
   }
 }
+// event listener for the operators button
 const operations = document.querySelectorAll(".operations");
 operations.forEach((op) => {
   op.addEventListener("click", (e) => {
@@ -207,6 +218,7 @@ function add(numA, numB) {
   lowerScreen.innerHTML = ans;
   empty();
   firstNum = ans;
+
   // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
   if (lastOp !== "=") firstOp = lastOp;
 }
@@ -220,7 +232,7 @@ function subtract(numA, numB) {
   lowerScreen.innerHTML = ans;
   empty();
   firstNum = ans;
-  // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
+
   if (lastOp !== "=") firstOp = lastOp;
 }
 
@@ -233,7 +245,7 @@ function multiply(numA, numB) {
   lowerScreen.innerHTML = ans;
   empty();
   firstNum = ans;
-  // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
+
   if (lastOp !== "=") firstOp = lastOp;
 }
 
@@ -246,7 +258,7 @@ function divide(numA, numB) {
   lowerScreen.innerHTML = ans;
   empty();
   firstNum = ans;
-  // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
+
   if (lastOp !== "=") firstOp = lastOp;
 }
 
@@ -257,7 +269,7 @@ function percentage(numA) {
   lowerScreen.innerHTML = ans;
   empty();
   firstNum = ans;
-  // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
+
   if (lastOp !== "=") firstOp = lastOp;
 }
 
@@ -268,7 +280,7 @@ function squareRoot(numA) {
   lowerScreen.innerHTML = ans;
   empty();
   firstNum = ans;
-  // if the second operator is not an equal sign, store the operator and make it the first operator for the subsequent expressions
+
   if (lastOp !== "=") firstOp = lastOp;
 }
 
