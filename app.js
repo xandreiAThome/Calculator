@@ -19,7 +19,7 @@ let secondDot = false;
 let secondOp = "";
 
 let evaluated = false;
-let consec = true;
+let consec = false;
 
 const lowerScreen = document.querySelector(".lower-screen");
 window.addEventListener("load", function (e) {
@@ -90,7 +90,7 @@ CE.addEventListener("click", (e) => {
     lowerScreen.innerHTML = "";
     upperScreen.innerHTML = "";
     evaluated = false;
-    consec = true;
+    consec = false;
     empty();
   } else if (firstNum !== "" && firstOp === "") {
     firstNum = firstNum.slice(0, -1);
@@ -109,7 +109,7 @@ AC.addEventListener("click", (e) => {
   lowerScreen.innerHTML = "";
   upperScreen.innerHTML = "";
   evaluated = false;
-  consec = true;
+  consec = false;
   empty();
 });
 
@@ -147,10 +147,11 @@ function inputOp(e) {
       evaluated = true;
       consec = false;
     }
+    consec = true;
     evaluate();
     // if first operator is percentage and there is a first number then evaluate it already
     // because the percentage operator doesn't need a second number
-  } else if (firstOp === "%" && firstNum !== "") {
+  } else if (firstOp === "%" && firstNum !== "" && secondNum === "") {
     secondOp = e.target.innerHTML;
     upperScreen.innerHTML = "";
     upperScreen.innerHTML = firstNum + firstOp;
@@ -158,10 +159,11 @@ function inputOp(e) {
       evaluated = true;
       consec = false;
     }
+    consec = true;
     evaluate();
     // if there is a first number and the first operator is a square root then evaluate it already
     // because the square root operator does't need a second number
-  } else if (firstNum !== "" && firstOp === "√") {
+  } else if (firstNum !== "" && firstOp === "√" && secondNum === "") {
     secondOp = e.target.innerHTML;
     upperScreen.innerHTML = "";
     upperScreen.innerHTML = firstOp + firstNum;
@@ -169,6 +171,7 @@ function inputOp(e) {
       evaluated = true;
       consec = false;
     }
+    consec = true;
     evaluate();
   }
 }
