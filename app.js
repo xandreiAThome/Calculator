@@ -20,8 +20,6 @@ let secondOp = "";
 
 let evaluated = false;
 let consec = true;
-let percentOp = false;
-let squareRootOp = false;
 
 const lowerScreen = document.querySelector(".lower-screen");
 window.addEventListener("load", function (e) {
@@ -42,7 +40,10 @@ function inputNumbers(e) {
   }
   // If there is still no first operator or the first operator is a square root
   // First Number added
-  if ((firstOp === "" || firstOp === "√") && firstNum.length < 15) {
+  if (
+    (firstOp === "" || (firstOp === "√" && !consec)) &&
+    firstNum.length < 15
+  ) {
     // if current char is a dot and there is already a first dot then do nothing
     if (e.target.innerHTML === "." && firstDot) {
       void 0;
@@ -58,8 +59,8 @@ function inputNumbers(e) {
     // Second Number added
   } else if (
     firstOp !== "" &&
-    !percentOp &&
-    !squareRootOp &&
+    firstOp !== "%" &&
+    firstOp !== "√" &&
     secondNum.length < 15
   ) {
     if (e.target.innerHTML === "." && secondDot) {
@@ -124,7 +125,6 @@ function inputOp(e) {
   ) {
     // if first operator is squareroot then it comes first before a number
     if (e.target.innerHTML === "√") {
-      squareRootOp = true;
       firstOp = e.target.innerHTML;
       upperScreen.innerHTML = "";
       upperScreen.innerHTML = firstOp + firstNum;
@@ -135,8 +135,6 @@ function inputOp(e) {
     }
     // if evaluated already and inputted a operator right after then it is a consecutive operation
     if (evaluated) consec = true;
-
-    if (e.target.innerHTML === "%") percentOp = true;
 
     // if there is a first operator and second number entered then evaluate the expression
   } else if (firstOp !== "" && secondNum !== "") {
