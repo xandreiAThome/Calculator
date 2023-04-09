@@ -22,12 +22,59 @@ let evaluated = false;
 let consec = false;
 
 const lowerScreen = document.querySelector(".lower-screen");
-window.addEventListener("load", function (e) {
-  var el = document.querySelector(".lower-screen");
-  el.scrollLeft = el.scrollWidth;
-});
 
 const upperScreen = document.querySelector(".upper-screen");
+
+///////////////////////////////////////////////////////// Event listeners
+
+// event listener for the operators button
+const operations = document.querySelectorAll(".operations");
+operations.forEach((op) => {
+  op.addEventListener("click", (e) => {
+    inputOp(e);
+  });
+});
+
+// event listener for the numbers buttons
+const numbers = document.querySelectorAll(".numbers");
+numbers.forEach((n) => {
+  n.addEventListener("click", (e) => {
+    inputNumbers(e);
+  });
+});
+
+// Clears just the current number or operator
+// Or if there is already an evaluated expression then clears it all
+const CE = document.getElementById("CE-btn");
+CE.addEventListener("click", (e) => {
+  if (evaluated) {
+    lowerScreen.innerHTML = "";
+    upperScreen.innerHTML = "";
+    evaluated = false;
+    consec = false;
+    empty();
+  } else if (firstNum !== "" && firstOp === "") {
+    firstNum = firstNum.slice(0, -1);
+    lowerScreen.innerHTML = "";
+    lowerScreen.innerHTML = firstNum;
+  } else if (firstOp !== "" && secondNum !== "" && secondOp === "") {
+    secondNum = secondNum.slice(0, -1);
+    lowerScreen.innerHTML = "";
+    lowerScreen.innerHTML = secondNum;
+  }
+});
+
+// Clears all the stored operations and numbers
+const AC = document.getElementById("AC-btn");
+AC.addEventListener("click", (e) => {
+  lowerScreen.innerHTML = "";
+  upperScreen.innerHTML = "";
+  evaluated = false;
+  consec = false;
+  empty();
+});
+
+///////////////////////////////////////////////////////// Input functions
 
 // Records the typed numbers in the calculator
 function inputNumbers(e) {
@@ -74,44 +121,6 @@ function inputNumbers(e) {
     }
   }
 }
-// event listener for the numbers buttons
-const numbers = document.querySelectorAll(".numbers");
-numbers.forEach((n) => {
-  n.addEventListener("click", (e) => {
-    inputNumbers(e);
-  });
-});
-
-// Clears just the current number or operator
-// Or if there is already an evaluated expression then clears it all
-const CE = document.getElementById("CE-btn");
-CE.addEventListener("click", (e) => {
-  if (evaluated) {
-    lowerScreen.innerHTML = "";
-    upperScreen.innerHTML = "";
-    evaluated = false;
-    consec = false;
-    empty();
-  } else if (firstNum !== "" && firstOp === "") {
-    firstNum = firstNum.slice(0, -1);
-    lowerScreen.innerHTML = "";
-    lowerScreen.innerHTML = firstNum;
-  } else if (firstOp !== "" && secondNum !== "" && secondOp === "") {
-    secondNum = secondNum.slice(0, -1);
-    lowerScreen.innerHTML = "";
-    lowerScreen.innerHTML = secondNum;
-  }
-});
-
-// Clears all the stored operations and numbers
-const AC = document.getElementById("AC-btn");
-AC.addEventListener("click", (e) => {
-  lowerScreen.innerHTML = "";
-  upperScreen.innerHTML = "";
-  evaluated = false;
-  consec = false;
-  empty();
-});
 
 // Handles the input of operations
 function inputOp(e) {
@@ -146,8 +155,9 @@ function inputOp(e) {
     if (e.target.innerHTML === "=") {
       evaluated = true;
       consec = false;
+    } else {
+      consec = true;
     }
-    consec = true;
     evaluate();
     // if first operator is percentage and there is a first number then evaluate it already
     // because the percentage operator doesn't need a second number
@@ -158,8 +168,9 @@ function inputOp(e) {
     if (e.target.innerHTML === "=") {
       evaluated = true;
       consec = false;
+    } else {
+      consec = true;
     }
-    consec = true;
     evaluate();
     // if there is a first number and the first operator is a square root then evaluate it already
     // because the square root operator does't need a second number
@@ -170,18 +181,12 @@ function inputOp(e) {
     if (e.target.innerHTML === "=") {
       evaluated = true;
       consec = false;
+    } else {
+      consec = true;
     }
-    consec = true;
     evaluate();
   }
 }
-// event listener for the operators button
-const operations = document.querySelectorAll(".operations");
-operations.forEach((op) => {
-  op.addEventListener("click", (e) => {
-    inputOp(e);
-  });
-});
 
 //////////////////////////////////////////////// Arithemetic functions below
 
