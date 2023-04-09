@@ -9,6 +9,8 @@
 
     BEWARE OF SPAGHETTI CODE
  */
+let numArr = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+let opArr = ["+", "-", "=", "%"];
 
 let firstNum = "";
 let firstDot = false;
@@ -31,7 +33,7 @@ const upperScreen = document.querySelector(".upper-screen");
 const operations = document.querySelectorAll(".operations");
 operations.forEach((op) => {
   op.addEventListener("click", (e) => {
-    inputOp(e);
+    inputOp(e.target.innerHTML);
   });
 });
 
@@ -39,7 +41,7 @@ operations.forEach((op) => {
 const numbers = document.querySelectorAll(".numbers");
 numbers.forEach((n) => {
   n.addEventListener("click", (e) => {
-    inputNumbers(e);
+    inputNumbers(e.target.innerHTML);
   });
 });
 
@@ -47,6 +49,157 @@ numbers.forEach((n) => {
 // Or if there is already an evaluated expression then clears it all
 const CE = document.getElementById("CE-btn");
 CE.addEventListener("click", (e) => {
+  CEFunc();
+});
+
+// Clears all the stored operations and numbers
+const AC = document.getElementById("AC-btn");
+AC.addEventListener("click", (e) => {
+  ACFunc();
+});
+
+// Keyboard event listener
+window.addEventListener("keydown", (e) => {
+  if (numArr.includes(e.key)) {
+    inputNumbers(e.key);
+  } else if (opArr.includes(e.key)) {
+    inputOp(e.key);
+  } else {
+    // special switch case for keys that are not input functions when pressed
+    // or are input functions but their keys pressed is not the same as the inputted key
+    switch (e.key) {
+      case "a" || "A":
+        ACFunc();
+        break;
+      case "c" || "C":
+        CEFunc();
+        break;
+      case "/":
+        inputOp("÷");
+        e.preventDefault();
+        break;
+      case "*":
+        inputOp("×");
+        break;
+      case "s" || "S":
+        inputOp("√");
+        break;
+    }
+  }
+});
+
+///////////////////////////////////////////////////////// Input functions
+
+// Records the typed numbers in the calculator
+function inputNumbers(key) {
+  // IF already evaluated and there is no consecutive operator then just empty the screen
+  // checks first num is not empty because the answer from each evaluation is stored as the first num of a consecutive operation if there is any
+  if (evaluated && firstNum !== "" && !consec) {
+    upperScreen.innerHTML = "";
+    empty();
+    evaluated = false;
+  }
+  // If there is still no first operator or the first operator is a square root
+  // First Number added
+  if (
+    (firstOp === "" || (firstOp === "√" && !consec)) &&
+    firstNum.length < 15
+  ) {
+    // if current char is a dot and there is already a first dot then do nothing
+    if (key === "." && firstDot) {
+      void 0;
+    } else {
+      firstNum += key;
+      lowerScreen.innerHTML = "";
+      lowerScreen.innerHTML = firstNum;
+
+      // if current char is a dot then make firstDot true so that there is only one dot for each Number
+      if (key === ".") firstDot = true;
+    }
+    // if there is now a first operator
+    // Second Number added
+  } else if (
+    firstOp !== "" &&
+    firstOp !== "%" &&
+    firstOp !== "√" &&
+    secondNum.length < 15
+  ) {
+    if (key === "." && secondDot) {
+      void 0;
+    } else {
+      secondNum += key;
+      lowerScreen.innerHTML = "";
+      lowerScreen.innerHTML = secondNum;
+
+      if (key === ".") secondDot = true;
+    }
+  }
+}
+
+// Handles the input of operations
+function inputOp(key) {
+  // if first number is entered and there is still no first operator and the first operator is not an equal sign
+  // Or if the first operator is a squareroot
+  // then add the first part of the expression to memory
+  if ((key === "√" || firstNum !== "") && firstOp === "" && key !== "=") {
+    // if first operator is squareroot then it comes first before a number
+    if (key === "√") {
+      firstOp = key;
+      upperScreen.innerHTML = "";
+      upperScreen.innerHTML = firstOp + firstNum;
+    } else {
+      firstOp = key;
+      upperScreen.innerHTML = "";
+      upperScreen.innerHTML = firstNum + firstOp;
+    }
+    // if evaluated already and inputted a operator right after then it is a consecutive operation
+    if (evaluated) consec = true;
+
+    // if there is a first operator and second number entered then evaluate the expression
+  } else if (firstOp !== "" && secondNum !== "") {
+    secondOp = key;
+    upperScreen.innerHTML = "";
+    upperScreen.innerHTML = firstNum + firstOp + secondNum;
+    // if the second operator is an equal sign then there is only one expression to evaluate
+    // and it is not a consecutive operation of expressions
+    if (key === "=") {
+      evaluated = true;
+      consec = false;
+    } else {
+      consec = true;
+    }
+    evaluate();
+    // if first operator is percentage and there is a first number then evaluate it already
+    // because the percentage operator doesn't need a second number
+  } else if (firstOp === "%" && firstNum !== "" && secondNum === "") {
+    secondOp = key;
+    upperScreen.innerHTML = "";
+    upperScreen.innerHTML = firstNum + firstOp;
+    if (key === "=") {
+      evaluated = true;
+      consec = false;
+    } else {
+      consec = true;
+    }
+    evaluate();
+    // if there is a first number and the first operator is a square root then evaluate it already
+    // because the square root operator does't need a second number
+  } else if (firstNum !== "" && firstOp === "√" && secondNum === "") {
+    secondOp = key;
+    upperScreen.innerHTML = "";
+    upperScreen.innerHTML = firstOp + firstNum;
+    if (key === "=") {
+      evaluated = true;
+      consec = false;
+    } else {
+      consec = true;
+    }
+    evaluate();
+  }
+}
+
+// CE function
+function CEFunc() {
   if (evaluated) {
     lowerScreen.innerHTML = "";
     upperScreen.innerHTML = "";
@@ -62,130 +215,15 @@ CE.addEventListener("click", (e) => {
     lowerScreen.innerHTML = "";
     lowerScreen.innerHTML = secondNum;
   }
-});
+}
 
-// Clears all the stored operations and numbers
-const AC = document.getElementById("AC-btn");
-AC.addEventListener("click", (e) => {
+// AC function
+function ACFunc() {
   lowerScreen.innerHTML = "";
   upperScreen.innerHTML = "";
   evaluated = false;
   consec = false;
   empty();
-});
-
-///////////////////////////////////////////////////////// Input functions
-
-// Records the typed numbers in the calculator
-function inputNumbers(e) {
-  // IF already evaluated and there is no consecutive operator then just empty the screen
-  // checks first num is not empty because the answer from each evaluation is stored as the first num of a consecutive operation if there is any
-  if (evaluated && firstNum !== "" && !consec) {
-    upperScreen.innerHTML = "";
-    empty();
-    evaluated = false;
-  }
-  // If there is still no first operator or the first operator is a square root
-  // First Number added
-  if (
-    (firstOp === "" || (firstOp === "√" && !consec)) &&
-    firstNum.length < 15
-  ) {
-    // if current char is a dot and there is already a first dot then do nothing
-    if (e.target.innerHTML === "." && firstDot) {
-      void 0;
-    } else {
-      firstNum += e.target.innerHTML;
-      lowerScreen.innerHTML = "";
-      lowerScreen.innerHTML = firstNum;
-
-      // if current char is a dot then make firstDot true so that there is only one dot for each Number
-      if (e.target.innerHTML === ".") firstDot = true;
-    }
-    // if there is now a first operator
-    // Second Number added
-  } else if (
-    firstOp !== "" &&
-    firstOp !== "%" &&
-    firstOp !== "√" &&
-    secondNum.length < 15
-  ) {
-    if (e.target.innerHTML === "." && secondDot) {
-      void 0;
-    } else {
-      secondNum += e.target.innerHTML;
-      lowerScreen.innerHTML = "";
-      lowerScreen.innerHTML = secondNum;
-
-      if (e.target.innerHTML === ".") secondDot = true;
-    }
-  }
-}
-
-// Handles the input of operations
-function inputOp(e) {
-  // if first number is entered and there is still no first operator and the first operator is not an equal sign
-  // Or if the first operator is a squareroot
-  // then add the first part of the expression to memory
-  if (
-    (e.target.innerHTML === "√" || firstNum !== "") &&
-    firstOp === "" &&
-    e.target.innerHTML !== "="
-  ) {
-    // if first operator is squareroot then it comes first before a number
-    if (e.target.innerHTML === "√") {
-      firstOp = e.target.innerHTML;
-      upperScreen.innerHTML = "";
-      upperScreen.innerHTML = firstOp + firstNum;
-    } else {
-      firstOp = e.target.innerHTML;
-      upperScreen.innerHTML = "";
-      upperScreen.innerHTML = firstNum + firstOp;
-    }
-    // if evaluated already and inputted a operator right after then it is a consecutive operation
-    if (evaluated) consec = true;
-
-    // if there is a first operator and second number entered then evaluate the expression
-  } else if (firstOp !== "" && secondNum !== "") {
-    secondOp = e.target.innerHTML;
-    upperScreen.innerHTML = "";
-    upperScreen.innerHTML = firstNum + firstOp + secondNum;
-    // if the second operator is an equal sign then there is only one expression to evaluate
-    // and it is not a consecutive operation of expressions
-    if (e.target.innerHTML === "=") {
-      evaluated = true;
-      consec = false;
-    } else {
-      consec = true;
-    }
-    evaluate();
-    // if first operator is percentage and there is a first number then evaluate it already
-    // because the percentage operator doesn't need a second number
-  } else if (firstOp === "%" && firstNum !== "" && secondNum === "") {
-    secondOp = e.target.innerHTML;
-    upperScreen.innerHTML = "";
-    upperScreen.innerHTML = firstNum + firstOp;
-    if (e.target.innerHTML === "=") {
-      evaluated = true;
-      consec = false;
-    } else {
-      consec = true;
-    }
-    evaluate();
-    // if there is a first number and the first operator is a square root then evaluate it already
-    // because the square root operator does't need a second number
-  } else if (firstNum !== "" && firstOp === "√" && secondNum === "") {
-    secondOp = e.target.innerHTML;
-    upperScreen.innerHTML = "";
-    upperScreen.innerHTML = firstOp + firstNum;
-    if (e.target.innerHTML === "=") {
-      evaluated = true;
-      consec = false;
-    } else {
-      consec = true;
-    }
-    evaluate();
-  }
 }
 
 //////////////////////////////////////////////// Arithemetic functions below
